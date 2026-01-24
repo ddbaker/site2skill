@@ -59,6 +59,7 @@ All documentation files are in the `docs/` directory as Markdown files.
 ## Search Tool
 
 ```bash
+# Run the search script (use python or python3)
 python scripts/search_docs.py "<query>"
 ```
 
@@ -94,6 +95,7 @@ Options:
         search_script_resource = templates.joinpath("search_docs.py")
         with open(dest_search_script, "w", encoding="utf-8") as f:
             f.write(search_script_resource.read_text(encoding="utf-8"))
+        os.chmod(dest_search_script, 0o755)
         logger.info("Installed search_docs.py")
 
         readme_resource = templates.joinpath("scripts_README.md")

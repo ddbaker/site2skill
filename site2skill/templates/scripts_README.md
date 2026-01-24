@@ -8,6 +8,7 @@ Full-text search across all documentation files.
 
 **Usage:**
 ```bash
+# Use python or python3
 python search_docs.py "<query>" [options]
 ```
 
