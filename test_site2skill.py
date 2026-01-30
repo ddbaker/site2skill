@@ -10,8 +10,8 @@ class TestSite2Skill(unittest.TestCase):
     def test_sanitize_path(self):
         """Test the sanitize_path utility function."""
         # Standard cases
-        self.assertEqual(sanitize_path("docs.example.com/api/index.md"), 'docs.example.com/api/index.md')
-        self.assertEqual(sanitize_path("docs@example.com/api#v1/index.md"), 'docs_example.com/api_v1/index.md')
+        self.assertEqual(sanitize_path("references.example.com/api/index.md"), 'references.example.com/api/index.md')
+        self.assertEqual(sanitize_path("references@example.com/api#v1/index.md"), 'references_example.com/api_v1/index.md')
         
         # Edge cases
         self.assertEqual(sanitize_path(""), 'file.md')
@@ -45,10 +45,10 @@ class TestSite2Skill(unittest.TestCase):
             skill_dir = os.path.join(self.output_base, skill_name)
             self.assertTrue(os.path.exists(os.path.join(skill_dir, "SKILL.md")), "SKILL.md should be created")
             
-            # Verify docs content
-            docs_dir = os.path.join(skill_dir, "docs")
-            self.assertTrue(os.path.exists(os.path.join(docs_dir, "root.md")), "root.md should be copied")
-            self.assertTrue(os.path.exists(os.path.join(docs_dir, "sub", "nested.md")), "nested.md should be copied in subdir")
+            # Verify references content
+            references_dir = os.path.join(skill_dir, "references")
+            self.assertTrue(os.path.exists(os.path.join(references_dir, "root.md")), "root.md should be copied")
+            self.assertTrue(os.path.exists(os.path.join(references_dir, "sub", "nested.md")), "nested.md should be copied in subdir")
             
             # Verify scripts
             scripts_dir = os.path.join(skill_dir, "scripts")

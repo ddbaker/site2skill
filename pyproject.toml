@@ -30,5 +30,6 @@ site2skill = ["templates/*"]
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
+    "skills-ref; python_version >= '3.11'",
 ]
 # No special uv settings needed yet

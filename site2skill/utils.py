@@ -20,10 +20,10 @@ def sanitize_path(path: str) -> str:
         after sanitization, returns "file.md" as a safe default.
         
     Examples:
-        >>> sanitize_path("docs.example.com/api/index.md")
-        'docs.example.com/api/index.md'
-        >>> sanitize_path("docs@example.com/api#v1/index.md")
-        'docs_example.com/api_v1/index.md'
+        >>> sanitize_path("references.example.com/api/index.md")
+        'references.example.com/api/index.md'
+        >>> sanitize_path("references@example.com/api#v1/index.md")
+        'references_example.com/api_v1/index.md'
         >>> sanitize_path("")
         'file.md'
     """
@@ -51,18 +51,18 @@ def html_to_md_path(html_path: str) -> str:
     Convert an HTML file path to a corresponding markdown file path.
     
     Args:
-        html_path: Path to HTML file (e.g., "docs/page.html")
+        html_path: Path to HTML file (e.g., "references/page.html")
         
     Returns:
-        Path to markdown file (e.g., "docs/page.md")
+        Path to markdown file (e.g., "references/page.md")
         
     Examples:
-        >>> html_to_md_path("docs/index.html")
-        'docs/index.md'
+        >>> html_to_md_path("references/index.html")
+        'references/index.md'
         >>> html_to_md_path("page.html")
         'page.md'
-        >>> html_to_md_path("docs/page")
-        'docs/page.md'
+        >>> html_to_md_path("references/page")
+        'references/page.md'
     """
     if html_path.endswith('.html'):
         return html_path[:-5] + '.md'

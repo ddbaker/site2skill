@@ -17,17 +17,17 @@ logger = logging.getLogger(__name__)
 
 def generate_skill_structure(skill_name: str, source_dir: Optional[str], output_base: str = ".claude/skills") -> None:
     """
-    Generate the Skill structure following SKILL.md + docs/ pattern.
+    Generate the Skill structure following SKILL.md + references/ pattern.
     Structure:
       <skill-name>/
         SKILL.md         # Entry point, usage instructions
-        docs/            # Documentation files (preserves directory structure)
+        references/      # Documentation files (preserves directory structure)
         scripts/         # (Optional) Executable code
     """
     skill_dir = os.path.join(output_base, skill_name)
 
     # Define subdirectories
-    docs_dir = os.path.join(skill_dir, "docs")
+    references_dir = os.path.join(skill_dir, "references")
     scripts_dir = os.path.join(skill_dir, "scripts")
 
     # Create directories
@@ -36,7 +36,7 @@ def generate_skill_structure(skill_name: str, source_dir: Optional[str], output_
     else:
         os.makedirs(skill_dir)
 
-    os.makedirs(docs_dir, exist_ok=True)
+    os.makedirs(references_dir, exist_ok=True)
     os.makedirs(scripts_dir, exist_ok=True)
 
     # Create SKILL.md
@@ -54,7 +54,8 @@ This skill provides access to {skill_name.upper()} documentation.
 
 ## Documentation
 
-All documentation files are in the `docs/` directory as Markdown files.
+All documentation files are in the `references/` directory as Markdown files.
+For legacy skills, documentation may live in `docs/`.
 
 ## Search Tool
 
@@ -68,7 +69,7 @@ Options:
 
 ## Usage
 
-1. Search or read files in `docs/` for relevant information
+1. Search or read files in `references/` for relevant information (fallback to `docs/` for legacy)
 2. Each file has frontmatter with `source_url` and `fetched_at`
 3. Always cite the source URL in responses
 4. Note the fetch date - documentation may have changed
@@ -115,13 +116,13 @@ Options:
                     
                     # Preserve directory structure relative to source_dir
                     rel_path = os.path.relpath(src_path, source_dir)
-                    dst_path = os.path.join(docs_dir, rel_path)
+                    dst_path = os.path.join(references_dir, rel_path)
 
-                    # Security check: Ensure dst_path is strictly within docs_dir
+                    # Security check: Ensure dst_path is strictly within references_dir
                     abs_dst_path = os.path.abspath(dst_path)
-                    abs_docs_dir = os.path.abspath(docs_dir)
+                    abs_references_dir = os.path.abspath(references_dir)
 
-                    if os.path.commonpath([abs_dst_path, abs_docs_dir]) != abs_docs_dir:
+                    if os.path.commonpath([abs_dst_path, abs_references_dir]) != abs_references_dir:
                         logger.warning(f"Skipping potential path traversal file: {file}")
                         continue
                     
@@ -133,7 +134,7 @@ Options:
                     shutil.copy2(src_path, dst_path)
                     file_count += 1
 
-        logger.info(f"Copied {file_count} files to docs/")
+        logger.info(f"Copied {file_count} files to references/")
     else:
         logger.warning(f"Source directory {source_dir} not found or empty.")
 
