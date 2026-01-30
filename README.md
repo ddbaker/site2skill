@@ -54,12 +54,15 @@ The tool generates a skill directory in `.claude/skills/<skill_name>/` containin
 ```
 <skill_name>/
 ├── SKILL.md           # Entry point with usage instructions
-├── docs/              # Markdown documentation files
+├── references/        # Markdown documentation files (preferred)
 └── scripts/
     └── search_docs.py # Search tool for documentation
 ```
 
 Additionally, a `<skill_name>.skill` file (ZIP archive) is created in the current directory.
+
+Legacy note: older skills may use `docs/` instead of `references/`. The search tool and validator
+now support both, preferring `references/` when present.
 
 ### Search Tool
 

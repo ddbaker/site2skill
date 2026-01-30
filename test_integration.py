@@ -115,7 +115,7 @@ def run_conversion_pipeline(crawl_dir, temp_base):
 
 def verify_results(skill_dir):
     """Verify the final skill structure."""
-    docs_dir = os.path.join(skill_dir, "docs")
+    references_dir = os.path.join(skill_dir, "references")
     
     # Expected files based on our test structure
     expected_files = [
@@ -135,7 +135,7 @@ def verify_results(skill_dir):
     
     print("\n=== Verifying Final Skill Structure ===")
     for expected in expected_files:
-        expected_path = os.path.join(docs_dir, expected)
+        expected_path = os.path.join(references_dir, expected)
         if os.path.exists(expected_path):
             # Verify content
             with open(expected_path, 'r') as f:
@@ -150,10 +150,10 @@ def verify_results(skill_dir):
             all_passed = False
     
     # Count index.md files
-    all_files = glob.glob(os.path.join(docs_dir, "**/*.md"), recursive=True)
+    all_files = glob.glob(os.path.join(references_dir, "**/*.md"), recursive=True)
     index_files = [f for f in all_files if f.endswith("index.md")]
     
-    print(f"\nTotal files in docs/: {len(all_files)}")
+    print(f"\nTotal files in references/: {len(all_files)}")
     print(f"Index.md files: {len(index_files)}")
     
     # We should have 6 different index.md files
@@ -213,4 +213,3 @@ def test_integration_pipeline():
 
 if __name__ == "__main__":
     test_integration_pipeline()
-

@@ -4,7 +4,7 @@ This directory contains helper tools for working with this skill.
 
 ## search_docs.py
 
-Full-text search across all documentation files.
+Full-text search across all documentation files (prefers references/, falls back to docs/).
 
 **Usage:**
 ```bash
