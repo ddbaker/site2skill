@@ -15,7 +15,12 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 
-def generate_skill_structure(skill_name: str, source_dir: Optional[str], output_base: str = ".claude/skills") -> None:
+def generate_skill_structure(
+    skill_name: str,
+    source_dir: Optional[str],
+    output_base: str = ".claude/skills",
+    target_agent: Optional[str] = None,
+) -> None:
     """
     Generate the Skill structure following SKILL.md + references/ pattern.
     Structure:
@@ -42,11 +47,18 @@ def generate_skill_structure(skill_name: str, source_dir: Optional[str], output_
     # Create SKILL.md
     skill_md_path = os.path.join(skill_dir, "SKILL.md")
     if not os.path.exists(skill_md_path):
+        frontmatter_lines = [
+            "---",
+            f"name: {skill_name}",
+            f"description: {skill_name.upper()} documentation assistant",
+        ]
+        if target_agent:
+            frontmatter_lines.append("metadata:")
+            frontmatter_lines.append(f"  target_agent: {target_agent}")
+        frontmatter_lines.append("---")
+        frontmatter = "\n".join(frontmatter_lines)
         with open(skill_md_path, "w", encoding="utf-8") as f:
-            f.write(f"""---
-name: {skill_name}
-description: {skill_name.upper()} documentation assistant
----
+            f.write(f"""{frontmatter}
 
 # {skill_name.upper()} Skill
 

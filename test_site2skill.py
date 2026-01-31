@@ -39,11 +39,19 @@ class TestSite2Skill(unittest.TestCase):
                 
             # Run generator
             skill_name = "test_skill"
-            generate_skill_structure(skill_name, self.source_dir, self.output_base)
+            generate_skill_structure(
+                skill_name,
+                self.source_dir,
+                self.output_base,
+                target_agent="cursor",
+            )
             
             # Verify structure
             skill_dir = os.path.join(self.output_base, skill_name)
             self.assertTrue(os.path.exists(os.path.join(skill_dir, "SKILL.md")), "SKILL.md should be created")
+            with open(os.path.join(skill_dir, "SKILL.md"), "r", encoding="utf-8") as f:
+                skill_md = f.read()
+            self.assertIn("target_agent: cursor", skill_md, "SKILL.md should include target_agent metadata")
             
             # Verify references content
             references_dir = os.path.join(skill_dir, "references")

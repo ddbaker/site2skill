@@ -29,7 +29,18 @@ def main():
     parser = argparse.ArgumentParser(description="Web Docs to Claude Code Skill Pipeline")
     parser.add_argument("url", help="URL of the documentation site")
     parser.add_argument("skill_name", help="Name of the skill (e.g., payjp)")
-    parser.add_argument("--output", "-o", default=".claude/skills", help="Base output directory for skill structure")
+    parser.add_argument(
+        "--target",
+        choices=["claude", "claude-desktop", "cursor", "gemini", "codex"],
+        default="claude",
+        help="Target agent (sets default output directory)",
+    )
+    parser.add_argument(
+        "--output",
+        "-o",
+        default=None,
+        help="Base output directory for skill structure (overrides target default)",
+    )
     parser.add_argument("--skill-output", default=".", help="Output directory for .skill file")
     parser.add_argument("--temp-dir", default="build", help="Temporary directory for processing")
     
@@ -40,6 +51,17 @@ def main():
     
     try:
         # 1. Setup Directories
+        output_base = args.output
+        if output_base is None:
+            target_output_map = {
+                "claude": ".claude/skills",
+                "claude-desktop": ".claude/skills",
+                "cursor": ".cursor/skills",
+                "gemini": ".gemini/skills",
+                "codex": ".codex/skills",
+            }
+            output_base = target_output_map[args.target]
+
         temp_download_dir = os.path.join(args.temp_dir, "download")
         temp_md_dir = os.path.join(args.temp_dir, "markdown")
         
@@ -116,9 +138,14 @@ def main():
             normalize_markdown(md_file, md_file)
             
         logger.info(f"=== Step 4: Generating Skill Structure ===")
-        generate_skill_structure(args.skill_name, temp_md_dir, args.output)
+        generate_skill_structure(
+            args.skill_name,
+            temp_md_dir,
+            output_base,
+            target_agent=args.target,
+        )
         
-        skill_dir = os.path.join(args.output, args.skill_name)
+        skill_dir = os.path.join(output_base, args.skill_name)
         
         logger.info(f"=== Step 5: Validating Skill ===")
         if not validate_skill(skill_dir):
@@ -127,12 +154,17 @@ def main():
         
         # Note: check_skill_size is now called inside validate_skill
         
-        logger.info(f"=== Step 6: Packaging Skill ===")
-        skill_file = package_skill(skill_dir, args.skill_output)
+        skill_file = None
+        if args.target == "claude-desktop":
+            logger.info(f"=== Step 6: Packaging Skill ===")
+            skill_file = package_skill(skill_dir, args.skill_output)
+        else:
+            logger.info("=== Step 6: Packaging Skill (skipped for non-claude-desktop targets) ===")
 
         logger.info(f"=== Done! ===")
         logger.info(f"Skill directory: {skill_dir}")
-        logger.info(f"Skill package: {skill_file}")
+        if skill_file:
+            logger.info(f"Skill package: {skill_file}")
         
         # Cleanup
         if args.clean:
