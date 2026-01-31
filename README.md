@@ -24,7 +24,8 @@ uvx --from git+https://github.com/laiso/site2skill site2skill https://docs.pay.j
 site2skill <URL> <SKILL_NAME> [options]
 
 Options:
-  --output, -o       Base output directory for skill structure (default: .claude/skills)
+  --target           Target agent (claude|claude-desktop|cursor|gemini|codex). Sets default output directory
+  --output, -o       Base output directory for skill structure (overrides target default)
   --skill-output     Output directory for .skill file (default: .)
   --temp-dir         Temporary directory for processing (default: build)
   --skip-fetch       Skip the download step (use existing files in temp dir)
