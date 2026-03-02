@@ -6,19 +6,56 @@
 
 Agent Skills are dynamically loaded knowledge modules that Claude uses on demand. They work across Claude Code, Claude apps, and the API.
 
-## Usage
+## Installation
 
-You can run this tool directly using `uvx` (requires `uv` installed):
+**Requirements:**
+*   **Python 3.10+**
+*   **wget**: Must be installed and available in your PATH.
+    *   macOS: `brew install wget`
+    *   Linux: `apt install wget`
+    *   Windows: Use WSL, or install via `choco install wget` / `scoop install wget`
+
+### Install from PyPI
 
 ```bash
-# General usage
-uvx --from git+https://github.com/laiso/site2skill site2skill <URL> <SKILL_NAME>
+# Standard installation with pip
+pip install site2skill
 
-# Example: Create a skill for PAY.JP
-uvx --from git+https://github.com/laiso/site2skill site2skill https://docs.pay.jp/v1/ payjp
+# Or with uv
+uv tool install site2skill
 ```
 
-### CLI Options
+### Run without Installation
+
+```bash
+# Run directly with uvx
+uvx site2skill <URL> <SKILL_NAME>
+```
+
+### Install from GitHub (Latest)
+
+```bash
+pip install git+https://github.com/laiso/site2skill.git
+uvx --from git+https://github.com/laiso/site2skill site2skill <URL> <SKILL_NAME>
+```
+
+## Usage
+
+```bash
+# Basic usage
+site2skill <URL> <SKILL_NAME>
+
+# Example: Create a skill for PAY.JP
+site2skill https://docs.pay.jp/v1/ payjp
+
+# Example: Create a skill for uv documentation
+site2skill https://docs.astral.sh/uv/ uv-docs
+
+# Target specific agent (sets default output directory)
+site2skill <URL> <SKILL_NAME> --target claude-desktop
+```
+
+## CLI Options
 
 ```
 site2skill <URL> <SKILL_NAME> [options]
@@ -31,14 +68,6 @@ Options:
   --skip-fetch       Skip the download step (use existing files in temp dir)
   --clean            Clean up temporary directory after completion
 ```
-
-### Requirements
-
-*   **Python 3.10+**
-*   **wget**: Must be installed and available in your PATH.
-    *   macOS: `brew install wget`
-    *   Linux: `apt install wget`
-    *   Windows: Use WSL, or install via `choco install wget` / `scoop install wget`
 
 ## How it works
 
