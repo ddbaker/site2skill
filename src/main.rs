@@ -34,6 +34,7 @@ impl TargetAgent {
 
 #[derive(Parser, Debug)]
 #[command(name = "site2skill")]
+#[command(version)]
 #[command(about = "Turn any documentation website into a Claude Agent Skill")]
 struct Args {
     /// URL of the documentation site
