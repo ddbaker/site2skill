@@ -8,27 +8,56 @@ Agent Skills are dynamically loaded knowledge modules that Claude uses on demand
 
 ## Installation
 
-### Install from PyPI
+### Install from PyPI (stable)
 
 ```bash
-# Standard installation with pip
 pip install site2skill
+```
 
-# Or with uv
-uv tool install site2skill
+This installs the stable Python version (0.1.x), which requires Python 3.10+ and wget.
+
+### Try the Rust beta
+
+A rewrite in Rust is available as a beta. It's ~4x faster, has no wget dependency, and ships as a single binary.
+
+```bash
+pip install --pre site2skill
+```
+
+Or pin the version:
+
+```bash
+pip install 'site2skill==0.2.0b1'
+```
+
+Verify you're running the Rust version:
+
+```bash
+site2skill --version
+# site2skill 0.2.0-beta.1
+```
+
+The stable version has no `--version` flag, so if you see a version string, you're on the Rust beta.
+
+To go back to stable:
+
+```bash
+pip install 'site2skill<0.2'
 ```
 
 ### Run without Installation
 
 ```bash
-# Run directly with uvx
+# Stable
 uvx site2skill <URL> <SKILL_NAME>
+
+# Beta
+uvx --pre site2skill <URL> <SKILL_NAME>
 ```
 
 ### Build from Source
 
 ```bash
-# Requires Rust toolchain
 git clone https://github.com/laiso/site2skill.git
 cd site2skill
 cargo build --release
@@ -63,6 +92,7 @@ Options:
   --temp-dir         Temporary directory for processing (default: build)
   --skip-fetch       Skip the download step (use existing files in temp dir)
   --clean            Clean up temporary directory after completion
+  --version          Print version (Rust beta only)
 ```
 
 ## How it works
