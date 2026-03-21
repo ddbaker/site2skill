@@ -48,11 +48,11 @@ pip install 'site2skill<0.2'
 ### Run without Installation
 
 ```bash
-# Stable
-uvx site2skill <URL> <SKILL_NAME>
-
-# Beta
+# Beta (Rust)
 uvx --pre site2skill <URL> <SKILL_NAME>
+
+# Stable (Python, from legacy branch)
+uvx --from 'git+https://github.com/laiso/site2skill@legacy' site2skill <URL> <SKILL_NAME>
 ```
 
 ### Build from Source
