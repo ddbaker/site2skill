@@ -1,5 +1,6 @@
 use clap::{Parser, ValueEnum};
 use chrono::Utc;
+use std::num::NonZeroUsize;
 use std::path::PathBuf;
 use tokio::fs;
 use tracing::{error, info, warn, Level};
@@ -27,7 +28,7 @@ impl TargetAgent {
             TargetAgent::Claude | TargetAgent::ClaudeDesktop => ".claude/skills",
             TargetAgent::Cursor => ".cursor/skills",
             TargetAgent::Gemini => ".gemini/skills",
-            TargetAgent::Codex => ".codex/skills",
+            TargetAgent::Codex => ".agents/skills",
         }
     }
 }
@@ -58,6 +59,10 @@ struct Args {
     /// Temporary directory for processing
     #[arg(long, default_value = "build")]
     temp_dir: PathBuf,
+
+    /// Maximum number of HTTP requests to run at once
+    #[arg(long, default_value = "10")]
+    max_concurrency: NonZeroUsize,
 
     /// Skip the download step (use existing files in temp dir)
     #[arg(long)]
@@ -110,7 +115,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             include_paths: vec![],
             exclude_query_keys: ["hl", "lang", "locale"].iter().map(|s| s.to_string()).collect(),
             delay_ms: 1000,
-            max_concurrency: 10,
+            max_concurrency: args.max_concurrency.get(),
             user_agent: "site2skill/0.2 (+https://github.com/laiso/site2skill)".to_string(),
         };
 
